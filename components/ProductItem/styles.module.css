@@ -1,0 +1,44 @@
+.container {
+  display: block;
+  background-color: #FFF;
+  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.head {
+  height: 90px;
+
+}
+
+.info {
+  padding: 13px;
+}
+
+.info .img {
+  text-align: center;
+  margin-top: -90px;
+}
+
+.info .img img {
+  width: 100%;
+  height: auto;
+}
+
+.info .catName {
+  color: #1B1B1B;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.info .productName {
+  color: #1B1B1B;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.info .productPrice {
+  font-size: 15px;
+  font-weight: 600;
+}
