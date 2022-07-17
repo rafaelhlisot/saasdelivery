@@ -1,3 +1,6 @@
+//package imports
+import { GetServerSideProps } from 'next';
+
 //style imports
 import styles from '../../styles/Home.module.css';
 
@@ -5,8 +8,17 @@ import styles from '../../styles/Home.module.css';
 import { Banner } from '../../components/Banner';
 import { ProdutcItem } from '../../components/ProductItem';
 import { SearchInput } from '../../components/SearchInput';
+import { useApi } from '../../libs/useApi';
+import { Tenant } from '../../types/Tenant';
+import { useAppContext } from '../../contexts/AppContext';
+import { useEffect } from 'react';
 
-const Home = () => {
+const Home = (data: Props) => {
+  const {tenant, setTenant} = useAppContext();
+
+  useEffect(() => {
+    setTenant(data.tenant);
+  }, []);
 
   const handleSearch = (searchValue: string) => {
     console.log(searchValue);
@@ -22,15 +34,14 @@ const Home = () => {
           </div>
           <div className={styles.headerTopRight}>
             <div className={styles.menuButton}>
-              <div className={styles.menuButtonLine}></div>
-              <div className={styles.menuButtonLine}></div>
-              <div className={styles.menuButtonLine}></div>
+              <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
+              <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
+              <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
             </div>
           </div>
         </div>
         <div className={styles.headerBottom}>
           <SearchInput
-            mainColor="#FB9400"
             onSearch={handleSearch}
           />
         </div>
@@ -44,11 +55,9 @@ const Home = () => {
             id: 1,
             image: '/tmp/texasBurger.png',
             categoryName: 'Tradicional',
-            name: 'Texas Burger',
+            name: 'B7Burger',
             price: 'RS 25,50'
           }}
-          mainColor="#FB9400"
-          secondColor="#FFF9F2"
         />
       </div>
     </div>
@@ -56,3 +65,31 @@ const Home = () => {
 }
 
 export default Home;
+
+type Props = {
+  tenant: Tenant
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {tenant: tenantSlug} = context.query;
+
+  const api = useApi();
+
+  //Get Tenant
+  const tenant = await api.getTenant(tenantSlug as string);
+
+  if(!tenant) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+  
+  return {
+    props: {
+      tenant
+    }
+  }
+}
