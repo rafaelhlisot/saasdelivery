@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 
 //style imports
-import styles from '../../styles/Login.module.css';
+import styles from '../../styles/SignUp.module.css';
 
 //components imports
 import { useApi } from '../../libs/useApi';
@@ -16,7 +16,7 @@ import { Button } from '../../components/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const Login = (data: Props) => {
+const SignUp = (data: Props) => {
   const {tenant, setTenant} = useAppContext();
 
   useEffect(() => {
@@ -33,27 +33,36 @@ const Login = (data: Props) => {
     router.push(`/${data.tenant.slug}/signup`);
   }
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <div className={styles.container}>      
       <Head>
-        <title>Login | {data.tenant.name}</title>
+        <title>Cadastro | {data.tenant.name}</title>
       </Head>
 
-      <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}`} />
+      <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}/login`} />
 
       <div className={styles.header}>{data.tenant.name}</div>
 
       <div
         className={styles.subtitle}
         style={{borderBottomColor: data.tenant.mainColor}}
-      >Use suas credenciais para realizar o login.</div>
+      >Preencha os campos para criar o seu cadastro.</div>
 
       <div className={styles.line}></div>
 
       <div className={styles.formArea}>
+        <div className={styles.inputArea}>
+          <InputField
+            color={data.tenant.mainColor}
+            placeholder="Digite Seu Nome"
+            value={name}
+            onChange={setName}
+          />
+        </div>
         <div className={styles.inputArea}>
           <InputField
             color={data.tenant.mainColor}
@@ -74,32 +83,22 @@ const Login = (data: Props) => {
         <div className={styles.inputArea}>
           <Button
             color={data.tenant.mainColor}
-            label="Entrar"
+            label="Cadastrar"
             onClick={handleSubmit}
             fill
           />
         </div>
       </div>
 
-      <div className={styles.forgetArea} style={{borderBottomColor: data.tenant.mainColor}}>
-        Esqueceu sua senha? <Link href={`/${data.tenant.slug}/forget`}><a style={{color: data.tenant.mainColor}}>Clique Aqui</a></Link>.
-      </div>
-
-      <div className={styles.line}></div>
-
-      <div className={styles.singupArea}>
-        <Button
-          color={data.tenant.mainColor}
-          label="Quero me cadastrar"
-          onClick={handleSignUp}
-        />
+      <div className={styles.forgetArea}>
+        Já tem cadastro? <Link href={`/${data.tenant.slug}/login`}><a style={{color: data.tenant.mainColor}}>Fazer Login</a></Link>.
       </div>
 
     </div>
   );
 }
 
-export default Login;
+export default SignUp;
 
 type Props = {
   tenant: Tenant
