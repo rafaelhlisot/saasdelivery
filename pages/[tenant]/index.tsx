@@ -13,15 +13,18 @@ import { Tenant } from '../../types/Tenant';
 import { useAppContext } from '../../contexts/app';
 import { useEffect, useState } from 'react';
 import { Product } from '../../types/Product';
+import { Sidebar } from '../../components/Sidebar';
 
 const Home = (data: Props) => {
   const {tenant, setTenant} = useAppContext();
 
   useEffect(() => {
     setTenant(data.tenant);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [products, setProducts] = useState<Product[]>(data.products);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleSearch = (searchValue: string) => {
     console.log(searchValue);
@@ -36,11 +39,19 @@ const Home = (data: Props) => {
             <div className={styles.headerSubtitle}>O que deseja para hoje?</div>
           </div>
           <div className={styles.headerTopRight}>
-            <div className={styles.menuButton}>
+            <div
+              className={styles.menuButton}
+              onClick={() => setSidebarOpen(true)}
+            >
               <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
               <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
               <div className={styles.menuButtonLine} style={{backgroundColor: tenant?.mainColor}}></div>
             </div>
+            <Sidebar
+              tenant={data.tenant}
+              onClose={() => setSidebarOpen(false)}
+              open={sidebarOpen}  
+            />
           </div>
         </div>
         <div className={styles.headerBottom}>
@@ -71,6 +82,7 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {tenant: tenantSlug} = context.query;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const api = useApi(tenantSlug as string);
 
   //Get Tenant
