@@ -7,7 +7,7 @@ import styles from '../../../styles/Product-id.module.css';
 //components imports=
 import { useApi } from '../../../libs/useApi';
 import { Tenant } from '../../../types/Tenant';
-import { useAppContext } from '../../../contexts/AppContext';
+import { useAppContext } from '../../../contexts/app';
 import { useEffect, useState } from 'react';
 import { Product } from '../../../types/Product';
 import Head from 'next/head';
@@ -70,7 +70,6 @@ const Product = (data: Props) => {
             count={qtCount}
             onUpdateCount={handleUpdateQt}
             min={1}
-            
           />
         </div>
         <div className={styles.areaRight} style={{color: data.tenant.mainColor}}>

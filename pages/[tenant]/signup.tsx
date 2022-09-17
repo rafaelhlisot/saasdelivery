@@ -8,7 +8,7 @@ import styles from '../../styles/SignUp.module.css';
 //components imports
 import { useApi } from '../../libs/useApi';
 import { Tenant } from '../../types/Tenant';
-import { useAppContext } from '../../contexts/AppContext';
+import { useAppContext } from '../../contexts/app';
 import Head from 'next/head';
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';

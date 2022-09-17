@@ -1,5 +1,3 @@
-import styles from './styles.module.css';
-
 import MailSent from './mailSent.svg';
 
 type Props = {
