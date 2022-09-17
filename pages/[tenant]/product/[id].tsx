@@ -14,6 +14,7 @@ import Head from 'next/head';
 import { Header } from '../../../components/Header';
 import { Button } from '../../../components/Button';
 import { useFormatter } from '../../../libs/useFormatter';
+import { Quantity } from '../../../components/Quantity';
 
 const Product = (data: Props) => {
   const {tenant, setTenant} = useAppContext();
@@ -22,10 +23,16 @@ const Product = (data: Props) => {
     setTenant(data.tenant);
   }, []);
 
+  const [qtCount, setQtCount] = useState(1);
+
   const formatter = useFormatter();
 
   const handleAddToCart = () => {
 
+  }
+
+  const handleUpdateQt = (newCount: number) => {
+    setQtCount(newCount);
   }
 
   return (
@@ -58,7 +65,13 @@ const Product = (data: Props) => {
 
       <div className={styles.area}>
         <div className={styles.areaLeft}>
-          ...
+          <Quantity
+            color={data.tenant.mainColor}
+            count={qtCount}
+            onUpdateCount={handleUpdateQt}
+            min={1}
+            
+          />
         </div>
         <div className={styles.areaRight} style={{color: data.tenant.mainColor}}>
           {formatter.formatPrice(data.product.price)}
