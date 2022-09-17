@@ -14,21 +14,36 @@ import { useAppContext } from '../../contexts/app';
 import { useEffect, useState } from 'react';
 import { Product } from '../../types/Product';
 import { Sidebar } from '../../components/Sidebar';
+import { getCookie } from 'cookies-next';
+import { User } from '../../types/User';
+import { useAuthContext } from '../../contexts/auth';
+import NoItemsIcon from '../../public/assets/noitems.svg';
 
 const Home = (data: Props) => {
+  const {setToken, setUser} = useAuthContext();
   const {tenant, setTenant} = useAppContext();
+  const [products, setProducts] = useState<Product[]>(data.products);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
+  const handleSearch = (value: string) => setSearchText(value);
 
   useEffect(() => {
     setTenant(data.tenant);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setToken(data.token);
+    if(data.user) setUser(data.user);
   }, []);
 
-  const [products, setProducts] = useState<Product[]>(data.products);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleSearch = (searchValue: string) => {
-    console.log(searchValue);
-  }
+  useEffect(() => {
+    let newFilteredProducts: Product[] = [];
+    for(let product of data.products) {
+      if(product.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+        newFilteredProducts.push(product);
+      }
+    }
+    setFilteredProducts(newFilteredProducts);
+  }, [searchText]);
 
   return (
     <div className={styles.container}>
@@ -61,13 +76,42 @@ const Home = (data: Props) => {
         </div>
       </header>
 
-      <Banner />
-      
-      <div className={styles.grid}>
-        {products.map((item, index) => (
-          <ProdutcItem key={index} data={item} />
-        ))}
-      </div>
+      {searchText &&
+        <>
+          <div className={styles.seacrText}>
+            Procurando por: <strong>{searchText}</strong>
+          </div>
+
+          {filteredProducts.length > 0 &&
+            <div className={styles.grid}>
+              {filteredProducts.map((item, index) => (
+                <ProdutcItem key={index} data={item} />
+              ))}
+            </div>
+          }
+
+          {filteredProducts.length === 0 &&
+            <div className={styles.noProducts}>
+              <NoItemsIcon color="#E0E0E0"/>
+              <div className={styles.noProductsText}>
+                Ops! Não há itens com esse nome...
+              </div>
+            </div>
+          }
+        </>
+      }
+
+      {!searchText &&
+        <>
+          <Banner />
+          
+          <div className={styles.grid}>
+            {products.map((item, index) => (
+              <ProdutcItem key={index} data={item} />
+            ))}
+          </div>
+        </>
+      }
     </div>
   );
 }
@@ -75,14 +119,15 @@ const Home = (data: Props) => {
 export default Home;
 
 type Props = {
-  tenant: Tenant,
-  products: Product[],
+  tenant: Tenant;
+  products: Product[];
+  token: string;
+  user: User | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {tenant: tenantSlug} = context.query;
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const api = useApi(tenantSlug as string);
 
   //Get Tenant
@@ -92,12 +137,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {redirect: {destination: '/', permanent: false}}
   }
 
+  const token = getCookie('token', context);
+
+  const user = await api.authorizeToken(token as string);
+
   const products = await api.getAllProducts();
   
   return {
     props: {
       tenant,
-      products
+      products,
+      user,
+      token
     }
   }
 }
