@@ -41,7 +41,7 @@ export const useApi = (tenantSlug: string) => ({
 
     return products;
   },
-  getProduct: async () => {
+  getProduct: async (id: String) => {
     return TEMPORARYoneProduct;
   }
 });
