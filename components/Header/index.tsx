@@ -1,6 +1,11 @@
+//style imports
 import styles from './styles.module.css';
-import BackIcon from './backIcon.svg';
+
+//package imports
 import Link from 'next/link';
+
+//image imports
+import BackIcon from './backIcon.svg';
 
 type Props = {
   backHref: string;

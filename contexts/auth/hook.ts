@@ -1,6 +1,11 @@
+//packages imports
 import { setCookie } from "cookies-next";
 import { useContext } from "react";
+
+//contexts imports
 import { AppContext } from ".";
+
+//types imports
 import { User } from "../../types/User";
 import { Actions } from "./types";
 

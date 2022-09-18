@@ -1,9 +1,18 @@
+//style imports
+import styles from './styles.module.css';
+
+//package imports
 import { useRouter } from 'next/router';
+
+//context imports
 import { useAuthContext } from '../../contexts/auth';
-import { Tenant } from '../../types/Tenant';
+
+//components imports
 import { Button } from '../Button';
 import { SidebarMenuItem } from '../SidebarMenuItem';
-import styles from './styles.module.css';
+
+//types imports
+import { Tenant } from '../../types/Tenant';
 
 type Props = {
   tenant: Tenant;

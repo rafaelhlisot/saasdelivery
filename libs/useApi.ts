@@ -1,5 +1,5 @@
+//types imports
 import { Product } from "../types/Product";
-import { Tenant } from "../types/Tenant";
 import { User } from "../types/User";
 
 const TEMPORARYoneProduct: Product = {
@@ -11,7 +11,7 @@ const TEMPORARYoneProduct: Product = {
   description: "2 Blends de carne de 150g, Queijo Cheddar, Bacon Caramelizado, Salada, Molho da casa, Pão brioche artesanal"
 }
 
-export const useApi = (tenantSlug?: string) => ({
+export const useApi = (tenantSlug: string) => ({
   getTenant: async () => {
     switch (tenantSlug) {
       case 'b7burger':
@@ -21,7 +21,6 @@ export const useApi = (tenantSlug?: string) => ({
           mainColor: '#FB9400',
           secondColor: '#FFF9F2'
         }
-        break;
       case 'b7pizza':
         return {
           slug: 'b7pizza',
@@ -29,7 +28,6 @@ export const useApi = (tenantSlug?: string) => ({
           mainColor: '#6AB70A',
           secondColor: '#E0E0E0'
         }
-        break;
       default: return false;
     }
   },
@@ -37,13 +35,16 @@ export const useApi = (tenantSlug?: string) => ({
     let products = [];
 
     for (let q = 0; q < 10; q++) {
-      products.push(TEMPORARYoneProduct);
+      products.push({
+        ...TEMPORARYoneProduct,
+        id: q + 1
+      });
     }
 
     return products;
   },
-  getProduct: async (id: String) => {
-    return TEMPORARYoneProduct;
+  getProduct: async (id: number) => {
+    return {...TEMPORARYoneProduct, id};
   },
   authorizeToken: async (token: string): Promise<User | false> => {
     if(!token) return false;

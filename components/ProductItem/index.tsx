@@ -1,8 +1,18 @@
-import Link from 'next/link';
-import { useAppContext } from '../../contexts/app';
-import { useFormatter } from '../../libs/useFormatter';
-import { Product } from '../../types/Product';
+//style imports
 import styles from './styles.module.css';
+
+//package imports
+import Link from 'next/link';
+
+//components imports
+import { useAppContext } from '../../contexts/app';
+
+//libs imports
+import { useFormatter } from '../../libs/useFormatter';
+
+//types imports
+import { Product } from '../../types/Product';
+
 
 type Props = {
   data: Product; 

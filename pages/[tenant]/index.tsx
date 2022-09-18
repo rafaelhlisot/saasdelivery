@@ -1,23 +1,31 @@
-//package imports
-import { GetServerSideProps } from 'next';
-
 //style imports
 import styles from '../../styles/Home.module.css';
+
+//package imports
+import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
+import { getCookie } from 'cookies-next';
+
+//libs imports
+import { useApi } from '../../libs/useApi';
+
+//contexts imports
+import { useAuthContext } from '../../contexts/auth';
+import { useAppContext } from '../../contexts/app';
 
 //components imports
 import { Banner } from '../../components/Banner';
 import { ProdutcItem } from '../../components/ProductItem';
 import { SearchInput } from '../../components/SearchInput';
-import { useApi } from '../../libs/useApi';
-import { Tenant } from '../../types/Tenant';
-import { useAppContext } from '../../contexts/app';
-import { useEffect, useState } from 'react';
-import { Product } from '../../types/Product';
 import { Sidebar } from '../../components/Sidebar';
-import { getCookie } from 'cookies-next';
-import { User } from '../../types/User';
-import { useAuthContext } from '../../contexts/auth';
+
+//assets imports
 import NoItemsIcon from '../../public/assets/noitems.svg';
+
+//types imports
+import { Tenant } from '../../types/Tenant';
+import { Product } from '../../types/Product';
+import { User } from '../../types/User';
 
 const Home = (data: Props) => {
   const {setToken, setUser} = useAuthContext();
@@ -134,7 +142,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const tenant = await api.getTenant();
 
   if(!tenant) {
-    return {redirect: {destination: '/', permanent: false}}
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
   }
 
   const token = getCookie('token', context);

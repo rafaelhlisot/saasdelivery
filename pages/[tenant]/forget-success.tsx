@@ -1,20 +1,25 @@
-//package imports
-import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
-
 //style imports
 import styles from '../../styles/ForgetSuccess.module.css';
 
-//components imports
-import { useApi } from '../../libs/useApi';
-import { Tenant } from '../../types/Tenant';
-import { useAppContext } from '../../contexts/app';
-import Head from 'next/head';
-import { Header } from '../../components/Header';
-import { InputField } from '../../components/InputField';
-import { Button } from '../../components/Button';
+//package imports
+import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+
+//libs imports
+import { useApi } from '../../libs/useApi';
+
+//components imports
+import { Header } from '../../components/Header';
+import { Button } from '../../components/Button';
 import { Icon } from '../../components/Icon';
+
+//contexts imports
+import { useAppContext } from '../../contexts/app';
+
+//types imports
+import { Tenant } from '../../types/Tenant';
 
 const ForgetSuccess = (data: Props) => {
   const {tenant, setTenant} = useAppContext();

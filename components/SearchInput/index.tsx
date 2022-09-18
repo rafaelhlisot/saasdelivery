@@ -1,6 +1,13 @@
-import { useState } from 'react';
+//style imports
 import styles from './styles.module.css';
+
+//package imports
+import { useState } from 'react';
+
+//image imports
 import SearchIcon from './searchicon.svg';
+
+//context imports
 import { useAppContext } from '../../contexts/app';
 
 type Props = {

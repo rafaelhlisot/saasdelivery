@@ -1,5 +1,10 @@
+//style imports
 import '../styles/globals.css';
+
+//package imports
 import type { AppProps } from 'next/app';
+
+//context imports
 import { Provider as AppContextProvider } from '../contexts/app';
 import { Provider as AuthContextProvider } from '../contexts/auth';
 

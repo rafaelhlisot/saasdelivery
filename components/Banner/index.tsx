@@ -1,7 +1,10 @@
+//style imports
 import styles from './styles.module.css';
+import 'swiper/css';
+
+//package imports
 import {Autoplay} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import 'swiper/css';
 
 export const Banner = () => {
   return (

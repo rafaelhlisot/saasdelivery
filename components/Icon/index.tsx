@@ -1,3 +1,4 @@
+//image imports
 import MailSent from './mailSent.svg';
 
 type Props = {

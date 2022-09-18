@@ -1,3 +1,4 @@
+//types imports
 import {DataType, ActionType, Actions} from './types';
 
 export const reducer = (state: DataType, action: ActionType) => {

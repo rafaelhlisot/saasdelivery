@@ -1,4 +1,7 @@
+//style imports
 import styles from './styles.module.css';
+
+//images imports
 import CartIcon from './cart.svg';
 import ConfigIcon from './config.svg';
 import FavIcon from './fav.svg';

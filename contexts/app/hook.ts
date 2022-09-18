@@ -1,5 +1,10 @@
+//packages imports
 import { useContext } from "react";
+
+//context imports
 import { AppContext } from ".";
+
+//types imports
 import { Tenant } from "../../types/Tenant";
 import { Actions } from "./types";
 

@@ -1,21 +1,27 @@
-//package imports
-import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
-
 //style imports
 import styles from '../../styles/Login.module.css';
 
-//components imports
-import { useApi } from '../../libs/useApi';
-import { Tenant } from '../../types/Tenant';
-import { useAppContext } from '../../contexts/app';
+//package imports
+import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+//libs imports
+import { useApi } from '../../libs/useApi';
+
+//contexts imports
+import { useAppContext } from '../../contexts/app';
+import { useAuthContext } from '../../contexts/auth';
+
+//components imports
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { Button } from '../../components/Button';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useAuthContext } from '../../contexts/auth';
+
+//types imports
+import { Tenant } from '../../types/Tenant';
 
 const Login = (data: Props) => {
   const {tenant, setTenant} = useAppContext();
@@ -31,7 +37,7 @@ const Login = (data: Props) => {
   const handleSubmit = () => {
     setToken('1234');
     setUser({
-      name: 'Rafael Lisot',
+      name: 'Rafael',
       email: 'rafael@teste.com'
     })
     router.push(`/${data.tenant.slug}`);
@@ -116,10 +122,12 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {tenant: tenantSlug} = context.query;
 
-  const api = useApi();
+  const api = useApi(tenantSlug as string);
 
   //Get Tenant
-  const tenant = await api.getTenant(tenantSlug as string);
+  const tenant = await api.getTenant();
+
+  console.log('tenant:', tenant);
 
   if(!tenant) {
     return {

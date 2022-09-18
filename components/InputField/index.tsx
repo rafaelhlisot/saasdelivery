@@ -1,8 +1,12 @@
+//style imports
 import styles from './styles.module.css';
 
+//package imports
+import { useState } from 'react';
+
+//image imports
 import EyeOn from './EyeOn.svg';
 import EyeOff from './EyeOff.svg';
-import { useState } from 'react';
 
 type Props = {
   color: string;

@@ -1,4 +1,7 @@
+//packages imports
 import { Dispatch, ReactNode } from "react";
+
+//types imports
 import { User } from "../../types/User";
 
 export type DataType = {

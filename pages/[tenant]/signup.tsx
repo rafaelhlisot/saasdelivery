@@ -1,20 +1,25 @@
-//package imports
-import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
-
 //style imports
 import styles from '../../styles/SignUp.module.css';
 
-//components imports
-import { useApi } from '../../libs/useApi';
-import { Tenant } from '../../types/Tenant';
-import { useAppContext } from '../../contexts/app';
+//package imports
+import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
+
+//libs imports
+import { useApi } from '../../libs/useApi';
+
+//contexts imports
+import { useAppContext } from '../../contexts/app';
+//components imports
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { Button } from '../../components/Button';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+
+//type imports
+import { Tenant } from '../../types/Tenant';
 
 const SignUp = (data: Props) => {
   const {tenant, setTenant} = useAppContext();

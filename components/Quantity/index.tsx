@@ -1,6 +1,11 @@
+//style imports
+import styles from './styles.module.css';
+
+//package imports
 import { useEffect, useState } from 'react';
+
+//libs imports
 import { useFormatter } from '../../libs/useFormatter';
-import styles from './style.module.css';
 
 type Props = {
   color: string;
