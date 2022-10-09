@@ -4,7 +4,7 @@ import styles from '../../styles/Cart.module.css';
 //package imports
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 
 //libs imports
 import { useApi } from '../../libs/useApi';
@@ -24,6 +24,8 @@ import { Button } from '../../components/Button';
 import { useFormatter } from '../../libs/useFormatter';
 import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
+import { CartProductItem } from '../../components/CartMenuItem';
+import { CartCookie } from '../../types/CartCookie';
 
 const Cart = (data: Props) => {
   const {setToken, setUser} = useAuthContext();
@@ -60,6 +62,30 @@ const Cart = (data: Props) => {
     setShippingTime(20);
   }
 
+  const handleCartChange = (newCount: number, id: number) => {
+    const tmpCart: CartItem[] = [...cart];
+
+    const cartindex = tmpCart.findIndex(item => item.product.id === id);
+    if(newCount > 0) {
+      tmpCart[cartindex].qt = newCount;
+    } else {
+      delete tmpCart[cartindex];
+    }
+
+    let newCart: CartItem[] = tmpCart.filter(item => item);
+    setCart(newCart);
+
+    let cartCookie: CartCookie[] = [];
+    for(let i in newCart) {
+      cartCookie.push({
+        id: newCart[i].product.id,
+        qt: newCart[i].qt
+      });
+    }
+
+    setCookie('cart', JSON.stringify(cartCookie));
+  }
+
   const handleFinish = () => {
     router.push(`/${data.tenant.slug}/checkout`);
   }
@@ -79,7 +105,15 @@ const Cart = (data: Props) => {
       <div className={styles.productsQuantity}>{cart.length} {cart.length === 1 ? 'item' : 'itens'}</div>
 
       <div className={styles.productsList}>
-
+        {cart.map((cartItem, index) => (
+          <CartProductItem
+            key={index}
+            color={data.tenant.mainColor}
+            quantity={cartItem.qt}
+            product={cartItem.product}
+            onChange={handleCartChange}
+          />
+        ))}
       </div>
 
       <div className={styles.shippingArea}>
