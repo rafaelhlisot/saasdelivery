@@ -19,7 +19,7 @@ export const ButtonWithIcon = ({color, leftIcon, rightIcon, value, onClick, fill
           style={{backgroundColor: fill ? 'rgba(0, 0, 0, 0.05)' : '#FFF'}}
         >
           <Icon
-            color={fill ? 'FFF' : color}
+            color={fill ? '#FFF' : color}
             height={24}
             icon={leftIcon}
             width={24}
