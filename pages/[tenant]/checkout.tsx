@@ -42,6 +42,9 @@ const Checkout = (data: Props) => {
   const [shippingAddress, setShippingAddress] = useState<Address>();
   const [paymentType, setPaymentType] = useState<'money' | 'card'>('money');
   const [paymentChange, setPaymentChange] = useState(0);
+  const [cupom, setCupom] = useState("");
+  const [cupomDiscount, setCupomDiscount] = useState(0);
+  const [cupomInput, setCupomInput] = useState('');
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -72,6 +75,13 @@ const Checkout = (data: Props) => {
       state: "SC"
     });
     setShippingPrice(10);
+  }
+
+  const handleSetCupom = () => {
+    if(cupomInput) {
+      setCupom(cupomInput);
+      setCupomDiscount(10);
+    }
   }
 
   const handleFinish = () => {
@@ -147,12 +157,29 @@ const Checkout = (data: Props) => {
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de Desconto</div>
           <div className={styles.infoBody}>
-            <ButtonWithIcon
-              color={data.tenant.mainColor}
-              value="teste123"
-              leftIcon="cupom"
-              rightIcon="checked"
-            />
+            {cupom &&
+              <ButtonWithIcon
+                color={data.tenant.mainColor}
+                value={cupom.toUpperCase()}
+                leftIcon="cupom"
+                rightIcon="checked"
+              />
+            }
+            {!cupom &&
+              <div className={styles.cupomInput}>
+                <InputField
+                  color={data.tenant.mainColor}
+                  onChange={newValue => setCupomInput(newValue)}
+                  placeholder="Tem Um Cupom??"
+                  value={cupomInput}
+                />
+                <Button
+                  color={data.tenant.mainColor}
+                  label="OK"
+                  onClick={handleSetCupom}
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -177,6 +204,12 @@ const Checkout = (data: Props) => {
           <div className={styles.resumeLeft}>Subtotal</div>
           <div className={styles.resumeRight}>{formatter.formatPrice(subtotal)}</div>
         </div>
+        {cupomDiscount > 0 &&
+          <div className={styles.resumeItem}>
+            <div className={styles.resumeLeft}>Desconto</div>
+            <div className={styles.resumeRight}>-{formatter.formatPrice(cupomDiscount)}</div>
+          </div>
+        }
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Frete</div>
           <div className={styles.resumeRight}>
@@ -187,7 +220,7 @@ const Checkout = (data: Props) => {
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Total</div>
           <div className={styles.resumeRightBig} style={{color: data.tenant.mainColor}}>
-            {formatter.formatPrice(shippingPrice + subtotal)}
+            {formatter.formatPrice(shippingPrice + subtotal - cupomDiscount)}
           </div>
         </div>
         <div className={styles.resumeButtom}>
