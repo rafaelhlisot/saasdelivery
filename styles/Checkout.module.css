@@ -23,6 +23,16 @@
 
 }
 
+.paymentTypes {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.paymentBtn {
+  flex: 1;
+}
+
 .productsQuantity {
   border-top: 1.5px solid rgba(27, 27, 27, 0.1);
   border-bottom: 1.5px solid rgba(27, 27, 27, 0.1);

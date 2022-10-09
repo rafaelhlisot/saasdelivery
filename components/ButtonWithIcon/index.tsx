@@ -16,7 +16,7 @@ export const ButtonWithIcon = ({color, leftIcon, rightIcon, value, onClick, fill
     <div className={styles.container} style={{backgroundColor: fill ? color : 'F9F9FB'}} onClick={onClick}>
       {leftIcon &&
         <div className={styles.leftSide}
-          style={{backgroundColor: fill ? 'rgba(0, 0, 0, 0.1)' : '#FFF'}}
+          style={{backgroundColor: fill ? 'rgba(0, 0, 0, 0.05)' : '#FFF'}}
         >
           <Icon
             color={fill ? 'FFF' : color}

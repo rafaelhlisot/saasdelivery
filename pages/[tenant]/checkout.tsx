@@ -13,13 +13,15 @@ import { useApi } from '../../libs/useApi';
 import { useAuthContext } from '../../contexts/auth';
 import { useAppContext } from '../../contexts/app';
 
+//components imports
+import { InputField } from '../../components/InputField';
+
 //types imports
 import { Tenant } from '../../types/Tenant';
 import { Product } from '../../types/Product';
 import { User } from '../../types/User';
 import Head from 'next/head';
 import { Header } from '../../components/Header';
-import { InputField } from '../../components/InputField';
 import { Button } from '../../components/Button';
 import { useFormatter } from '../../libs/useFormatter';
 import { CartItem } from '../../types/CartItem';
@@ -92,7 +94,7 @@ const Checkout = (data: Props) => {
   }
 
   const handleChangeAddress = () => {
-    
+
   }
 
   return (
@@ -123,17 +125,51 @@ const Checkout = (data: Props) => {
 
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Tipo de Pagamento</div>
-          <div className={styles.infoBody}></div>
+          <div className={styles.infoBody}>
+            <div className={styles.paymentTypes}>
+              <div className={styles.paymentBtn}>
+                <ButtonWithIcon
+                  color={data.tenant.mainColor}
+                  value="Dinheiro"
+                  leftIcon="money"
+                  onClick={() => {}}
+                  fill
+                />
+              </div>
+              <div className={styles.paymentBtn}>
+                <ButtonWithIcon
+                  color={data.tenant.mainColor}
+                  value="Cartão"
+                  leftIcon="card"
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Troco</div>
-          <div className={styles.infoBody}></div>
+          <div className={styles.infoBody}>
+            <InputField
+              color={data.tenant.mainColor}
+              placeholder="Quanto você tem em dinheiro?"
+              value={""}
+              onChange={() => {}}
+            />
+          </div>
         </div>
 
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de Desconto</div>
-          <div className={styles.infoBody}></div>
+          <div className={styles.infoBody}>
+            <ButtonWithIcon
+              color={data.tenant.mainColor}
+              value="teste123"
+              leftIcon="cupom"
+              rightIcon="checked"
+            />
+          </div>
         </div>
       </div>
 
