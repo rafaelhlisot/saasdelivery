@@ -4,7 +4,7 @@ import styles from '../../styles/Checkout.module.css';
 //package imports
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 
 //libs imports
 import { useApi } from '../../libs/useApi';
@@ -18,7 +18,6 @@ import { InputField } from '../../components/InputField';
 
 //types imports
 import { Tenant } from '../../types/Tenant';
-import { Product } from '../../types/Product';
 import { User } from '../../types/User';
 import Head from 'next/head';
 import { Header } from '../../components/Header';
@@ -27,7 +26,6 @@ import { useFormatter } from '../../libs/useFormatter';
 import { CartItem } from '../../types/CartItem';
 import { useRouter } from 'next/router';
 import { CartProductItem } from '../../components/CartMenuItem';
-import { CartCookie } from '../../types/CartCookie';
 import { ButtonWithIcon } from '../../components/ButtonWithIcon';
 import { Address } from '../../types/Address';
 
@@ -42,6 +40,8 @@ const Checkout = (data: Props) => {
   const [subtotal, setSubtotal] = useState(0);
   const [cart, setCart] = useState<CartItem[]>(data.cart);
   const [shippingAddress, setShippingAddress] = useState<Address>();
+  const [paymentType, setPaymentType] = useState<'money' | 'card'>('money');
+  const [paymentChange, setPaymentChange] = useState(0);
 
   useEffect(() => {
     setTenant(data.tenant);
@@ -57,33 +57,8 @@ const Checkout = (data: Props) => {
     setSubtotal(sub);
   }, [cart]);
 
-  const handleCartChange = (newCount: number, id: number) => {
-    const tmpCart: CartItem[] = [...cart];
 
-    const cartindex = tmpCart.findIndex(item => item.product.id === id);
-    if(newCount > 0) {
-      tmpCart[cartindex].qt = newCount;
-    } else {
-      delete tmpCart[cartindex];
-    }
-
-    let newCart: CartItem[] = tmpCart.filter(item => item);
-    setCart(newCart);
-
-    let cartCookie: CartCookie[] = [];
-    for(let i in newCart) {
-      cartCookie.push({
-        id: newCart[i].product.id,
-        qt: newCart[i].qt
-      });
-    }
-
-    setCookie('cart', JSON.stringify(cartCookie));
-  }
-
-  const handleFinish = () => {
-    
-  }
+  
 
   const handleChangeAddress = () => {
     //router.push(`/${data.tenant.slug}/myaddresses`);
@@ -97,6 +72,10 @@ const Checkout = (data: Props) => {
       state: "SC"
     });
     setShippingPrice(10);
+  }
+
+  const handleFinish = () => {
+    
   }
 
   return (
@@ -134,8 +113,8 @@ const Checkout = (data: Props) => {
                   color={data.tenant.mainColor}
                   value="Dinheiro"
                   leftIcon="money"
-                  onClick={() => {}}
-                  fill
+                  onClick={() => setPaymentType('money')}
+                  fill={paymentType === 'money'}
                 />
               </div>
               <div className={styles.paymentBtn}>
@@ -143,24 +122,27 @@ const Checkout = (data: Props) => {
                   color={data.tenant.mainColor}
                   value="Cartão"
                   leftIcon="card"
-                  onClick={() => {}}
+                  onClick={() => setPaymentType('card')}
+                  fill={paymentType === 'card'}
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className={styles.infoArea}>
-          <div className={styles.infoTitle}>Troco</div>
-          <div className={styles.infoBody}>
-            <InputField
-              color={data.tenant.mainColor}
-              placeholder="Quanto você tem em dinheiro?"
-              value={""}
-              onChange={() => {}}
-            />
+        {paymentType === 'money' &&
+          <div className={styles.infoArea}>
+            <div className={styles.infoTitle}>Troco</div>
+            <div className={styles.infoBody}>
+              <InputField
+                color={data.tenant.mainColor}
+                placeholder="Quanto você tem em dinheiro?"
+                value={paymentChange ? paymentChange.toString() : ""}
+                onChange={newValue => setPaymentChange(parseInt(newValue))}
+              />
+            </div>
           </div>
-        </div>
+        }
 
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de Desconto</div>
@@ -184,7 +166,7 @@ const Checkout = (data: Props) => {
             color={data.tenant.mainColor}
             quantity={cartItem.qt}
             product={cartItem.product}
-            onChange={handleCartChange}
+            onChange={() => {}}
             noEdit
           />
         ))}
