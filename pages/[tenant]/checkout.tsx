@@ -42,7 +42,7 @@ const Checkout = (data: Props) => {
   const [shippingAddress, setShippingAddress] = useState<Address>();
   const [paymentType, setPaymentType] = useState<'money' | 'card'>('money');
   const [paymentChange, setPaymentChange] = useState(0);
-  const [cupom, setCupom] = useState("");
+  const [cupom, setCupom] = useState('');
   const [cupomDiscount, setCupomDiscount] = useState(0);
   const [cupomInput, setCupomInput] = useState('');
 
@@ -59,9 +59,6 @@ const Checkout = (data: Props) => {
     }
     setSubtotal(sub);
   }, [cart]);
-
-
-  
 
   const handleChangeAddress = () => {
     //router.push(`/${data.tenant.slug}/myaddresses`);
@@ -160,26 +157,28 @@ const Checkout = (data: Props) => {
             {cupom &&
               <ButtonWithIcon
                 color={data.tenant.mainColor}
-                value={cupom.toUpperCase()}
                 leftIcon="cupom"
                 rightIcon="checked"
+                value={cupom.toLocaleUpperCase()}
               />
             }
             {!cupom &&
               <div className={styles.cupomInput}>
                 <InputField
                   color={data.tenant.mainColor}
-                  onChange={newValue => setCupomInput(newValue)}
-                  placeholder="Tem Um Cupom??"
+                  placeholder="Tem Um Cupom?"
                   value={cupomInput}
+                  onChange={newValue => setCupomInput(newValue)}
                 />
                 <Button
                   color={data.tenant.mainColor}
                   label="OK"
                   onClick={handleSetCupom}
+                  disabled
                 />
               </div>
             }
+           
           </div>
         </div>
       </div>
