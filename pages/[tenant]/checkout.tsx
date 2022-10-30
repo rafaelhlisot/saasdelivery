@@ -61,17 +61,7 @@ const Checkout = (data: Props) => {
   }, [cart]);
 
   const handleChangeAddress = () => {
-    //router.push(`/${data.tenant.slug}/myaddresses`);
-    setShippingAddress({
-      id: 1,
-      cep: "89925000",
-      street: "Rua Santos Dumont",
-      number: "852",
-      neighborhood: "centro",
-      city: "Belmonte",
-      state: "SC"
-    });
-    setShippingPrice(10);
+    router.push(`/${data.tenant.slug}/myaddresses`);
   }
 
   const handleSetCupom = () => {
